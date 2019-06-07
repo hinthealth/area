@@ -1,7 +1,4 @@
-[![Build Status](https://secure.travis-ci.org/jgv/area.png)](http://travis-ci.org/jgv/area)
-# Area
-
-Hi. This gem allows you to perform the following conversions:
+Hi. This gem is a fork of the area gem https://github.com/jgv/area and allows you to perform the following conversions:
 
 * An area code to a region (state)
 * A state to an area code
@@ -10,17 +7,24 @@ Hi. This gem allows you to perform the following conversions:
 * A zipcode to a lat/lon
 * A zipcode to just a lat
 * A zipcode to just a lon
-* A zipcode to its GMT offset
-* A state to its GMT offset
 * A lat/lon pair to a region
-* A lat/lon pair to its GMT offset
 * A lat/lon pair to its zip code
 
-Area uses public domain data and does not rely on any external services (the internets). Usage is meant to be more lightweight than the Geocoder gem.
+Original area gem includes the following conversions:
+* A zipcode to its GMT offset
+* A state to its GMT offset
+* A lat/lon pair to its GMT offset
 
-## Installation
+The difference between the original area gem and this forked gem is the zipcodes.csv file. This gem uses the geonames US file from http://download.geonames.org/export/zip/US.zip, which provides a more up-to-date list of US-based zip codes. To meet the needs of the area gem format, we have adapted the original geonames file by removing columns 0, 3, 5, 6, 7, 8 and 11. All the information itself has remained the same.
 
-In your gemfile: `gem 'area'`
+Meaning of said columns:
+* 0 country code
+* 3 admin name1: 1. order subdivision (state)
+* 5 admin name2: 2. order subdivision (county/province)
+* 6 admin code2: 2. order subdivision (county/province)
+* 7 admin name3: 3. order subdivision (community)
+* 8 admin code3: 3. order subdivision (community)
+* 11 accuracy
 
 ## Usage
 
@@ -63,26 +67,6 @@ In your gemfile: `gem 'area'`
 "11211".to_lon #=> "-73.95427"
 ```
 
-#### Get the GMT offset of a zipcode
-```` ruby
-"11211".to_gmt_offset #=> "-5"
-```
-
-#### Get the GMT offset of a state
-```` ruby
-"NY".to_gmt_offset #=> "-5" # by state
-```
-
-#### Determine daylight savings time observance of a zipcode
-```` ruby
-"11211".observes_dst? #=> true
-```
-
-#### Determine daylight savings time observance of a state
-```` ruby
-"NY".observes_dst? #=> true # by state
-```
-
 #### Convert a lat/lon pair to a zipcode
 ```` ruby
 [40.71209, -73.95427].to_zip #=> "11211"
@@ -92,28 +76,6 @@ In your gemfile: `gem 'area'`
 ```` ruby
 [40.71209, -73.95427].to_region #=> "Brooklyn, NY"
 ```
-
-#### Get the GMT offset for a lat/lon pair
-```` ruby
-[40.71209, -73.95427].to_gmt_offset #=> "-5"
-```
-
-#### Determine daylight savings time observance for a lat/lon pair
-```` ruby
-[40.71209, -73.95427].observes_dst? #=> true
-```
-
-## Testing and Contributing and Stuff
-
-Contributions are more than welcome. I'm [testing](http://travis-ci.org/jgv/area) with minitest. This gem supports:
-
-* Ruby 1.8.7
-* Ruby 1.9.2
-* Ruby 1.9.3
-* JRuby 1.8
-* JRuby 1.9
-* Rubinius 1.8
-* Rubinius 1.9
 
 ## Copyright
 
